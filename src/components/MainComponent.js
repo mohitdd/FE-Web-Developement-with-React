@@ -4,6 +4,8 @@ import { DISHES } from "../shared/dishes";
 import DishDetail from "./DishdetailComponent";
 import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
+import Home from "./HomeComponent";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 class Main extends Component {
   constructor(props) {
@@ -19,28 +21,23 @@ class Main extends Component {
     console.log("COmponent did mount for MAIN");
   }
 
-  OnDishSelect(dishId) {
-    this.setState({ selectedDish: dishId });
-  }
-
   render() {
+    const HomePage = () => {
+      return <Home></Home>;
+    };
     console.log("Render method invoked for the main menu");
     return (
       <div>
-        <Header></Header>
-        <div className="container">
-          <Menu
-            dishes={this.state.dishes}
-            onClick={dishId => this.OnDishSelect(dishId)}
+        <Header />
+        <Switch>
+          <Route path="/home" component={HomePage}></Route>
+          <Route
+            exact
+            path="/menu"
+            component={() => <Menu dishes={this.state.dishes} />}
           />
-          <DishDetail
-            dishSelect={
-              this.state.dishes.filter(
-                dish => dish.id === this.state.selectedDish
-              )[0]
-            }
-          />
-        </div>
+          <Redirect to="/home"></Redirect>
+        </Switch>
         <Footer />
       </div>
     );
