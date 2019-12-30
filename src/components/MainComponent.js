@@ -38,6 +38,22 @@ class Main extends Component {
         ></Home>
       );
     };
+
+    const DishWithId = ({ match }) => {
+      console.log("The item we are going to render has dish id" + match.params);
+      return (
+        <DishDetail
+          dishSelect={
+            this.state.dishes.filter(
+              dish => dish.id === parseInt(match.params.dishId, 10)
+            )[0]
+          }
+          comments={this.state.comments.filter(
+            comment => comment.dishId === parseInt(match.params.dishId, 10)
+          )}
+        />
+      );
+    };
     console.log("Render method invoked for the main menu");
     return (
       <div>
@@ -49,6 +65,7 @@ class Main extends Component {
             path="/menu"
             component={() => <Menu dishes={this.state.dishes} />}
           />
+          <Route path="/menu/:dishId" component={DishWithId}></Route>
           <Route path="/contactus" component={Contact}></Route>
           <Redirect to="/home"></Redirect>
         </Switch>

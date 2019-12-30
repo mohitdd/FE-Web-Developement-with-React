@@ -1,5 +1,14 @@
 import React from "react";
-import { Card, CardImg, CardText, CardBody, CardTitle } from "reactstrap";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  BreadcrumbItem,
+  Breadcrumb
+} from "reactstrap";
+import { Link } from "react-router-dom";
 
 function RenderDish({ dish }) {
   console.log("The dish to be rendered is :" + dish.name);
@@ -40,15 +49,29 @@ function RenderComments({ comments }) {
 }
 
 function DishDetail(props) {
-  console.log("Dishdetail component render is invoked");
+  console.log("Dishdetail component render is invoked" + props.comments);
   if (props.dishSelect != null) {
     return (
-      <div className="row">
-        <div className="col-12 col-md-5 m-1">
-          <RenderDish dish={props.dishSelect}></RenderDish>
+      <div className="container">
+        <div className="row m-1">
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/menu">Menu</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem active>{props.dishSelect.name}</BreadcrumbItem>
+          </Breadcrumb>
+          <div className="col-12">
+            <h3>{props.dishSelect.name}</h3>
+            <hr />
+          </div>
         </div>
-        <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.dishSelect.comments}></RenderComments>
+        <div className="row">
+          <div className="col-12 col-md-5 m-1">
+            <RenderDish dish={props.dishSelect}></RenderDish>
+          </div>
+          <div className="col-12 col-md-5 m-1">
+            <RenderComments comments={props.comments}></RenderComments>
+          </div>
         </div>
       </div>
     );
