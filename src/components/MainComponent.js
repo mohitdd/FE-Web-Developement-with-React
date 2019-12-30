@@ -10,11 +10,11 @@ import { COMMENTS } from "../shared/comments";
 import { LEADERS } from "../shared/leaders";
 import { PROMOTIONS } from "../shared/promotions";
 import { Route, Switch, Redirect } from "react-router-dom";
+import About from "../components/AboutComponent";
 
 class Main extends Component {
   constructor(props) {
     super(props);
-    console.log("MAIN CONSTRUCTOR");
     this.state = {
       dishes: DISHES,
       promotions: PROMOTIONS,
@@ -40,7 +40,6 @@ class Main extends Component {
     };
 
     const DishWithId = ({ match }) => {
-      console.log("The item we are going to render has dish id" + match.params);
       return (
         <DishDetail
           dishSelect={
@@ -54,7 +53,7 @@ class Main extends Component {
         />
       );
     };
-    console.log("Render method invoked for the main menu");
+
     return (
       <div>
         <Header />
@@ -64,6 +63,10 @@ class Main extends Component {
             exact
             path="/menu"
             component={() => <Menu dishes={this.state.dishes} />}
+          />
+          <Route
+            path="/aboutus"
+            component={() => <About leaders={this.state.leaders} />}
           />
           <Route path="/menu/:dishId" component={DishWithId}></Route>
           <Route path="/contactus" component={Contact}></Route>
