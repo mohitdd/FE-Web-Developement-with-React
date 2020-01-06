@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Card,
   CardImg,
@@ -6,9 +6,116 @@ import {
   CardBody,
   CardTitle,
   BreadcrumbItem,
-  Breadcrumb
+  Breadcrumb,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  Label
 } from "reactstrap";
 import { Link } from "react-router-dom";
+import { LocalForm, Control, Errors } from "react-redux-form";
+
+const required = val => val && val.length;
+const minimumLength = len => val => val && val.length >= len;
+const maximumLength = len => val => !val || val.length <= len;
+
+export class CommentForm extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isModalOpen: false
+    };
+  }
+
+  toggleModal = () => {
+    this.setState({
+      isModalOpen: !this.state.isModalOpen
+    });
+  };
+
+  handleSubmit = values => {
+    alert("values passed is:" + JSON.stringify(values));
+    this.toggleModal();
+  };
+
+  render() {
+    return (
+      <React.Fragment>
+        <Button outline color="secondary" onClick={this.toggleModal}>
+          <span className="fa fa-pencil fa-lg mr-1" />
+          Submit Comment
+        </Button>
+        <Modal toggle={this.toggleModal} isOpen={this.state.isModalOpen}>
+          <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
+
+          <ModalBody>
+            <LocalForm onSubmit={values => this.handleSubmit(values)}>
+              <div className="form-group">
+                <Label htmlFor="rating">Rating</Label>
+                <Control.select
+                  model=".rating"
+                  id="rating"
+                  name="rating"
+                  className="form-control"
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </Control.select>
+              </div>
+              <div className="form-group">
+                <Label htmlFor="author">Your Name</Label>
+                <Control.text
+                  model=".author"
+                  name="author"
+                  id="author"
+                  className="form-control"
+                  placeholder="Your Name"
+                  validators={{
+                    required,
+                    minimumLength: minimumLength(3),
+                    maximumLength: maximumLength(15)
+                  }}
+                ></Control.text>
+                <Errors
+                  className="text-danger"
+                  model=".author"
+                  show="touched"
+                  messages={{
+                    required: "Required",
+                    minimumLength: "Must be greater than 2 charcters",
+                    maximumLength: "Must be 15 chracters or less"
+                  }}
+                ></Errors>
+              </div>
+              <div className="form-group">
+                <Label htmlFor="comment">Comment</Label>
+                <Control.textarea
+                  model=".comment"
+                  id="comment"
+                  name="comment"
+                  className="form-control"
+                  rows="6"
+                  validators={{
+                    required,
+                    minimumLength: minimumLength(3),
+                    maximumLength: maximumLength(15)
+                  }}
+                ></Control.textarea>
+              </div>
+              <Button type="submit" color="primary">
+                Submit
+              </Button>
+            </LocalForm>
+          </ModalBody>
+        </Modal>
+      </React.Fragment>
+    );
+  }
+}
 
 function RenderDish({ dish }) {
   console.log("The dish to be rendered is :" + dish.name);
@@ -71,6 +178,7 @@ function DishDetail(props) {
           </div>
           <div className="col-12 col-md-5 m-1">
             <RenderComments comments={props.comments}></RenderComments>
+            <CommentForm></CommentForm>
           </div>
         </div>
       </div>
