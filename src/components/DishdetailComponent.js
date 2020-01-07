@@ -35,8 +35,14 @@ export class CommentForm extends Component {
   };
 
   handleSubmit = values => {
-    alert("values passed is:" + JSON.stringify(values));
     this.toggleModal();
+    //alert("values passed is:" + JSON.stringify(this.props.dishId));
+    this.props.addComment(
+      this.props.dishId,
+      values.rating,
+      values.author,
+      values.comment
+    );
   };
 
   render() {
@@ -118,7 +124,7 @@ export class CommentForm extends Component {
 }
 
 function RenderDish({ dish }) {
-  console.log("The dish to be rendered is :" + dish.name);
+  console.log("The dish to be rendered is :" + dish.id);
   return (
     <Card key={dish.id}>
       <CardImg top width="100%" src={dish.image} alt={dish.name}></CardImg>
@@ -130,8 +136,11 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments }) {
+function RenderComments({ comments, addComment, dishId }) {
   if (comments != null) {
+    console.log(
+      "The comments passed are" + JSON.stringify(comments[comments.length - 1])
+    );
     let list = comments.map(comment => {
       return (
         <li key={comment.id}>
@@ -148,6 +157,7 @@ function RenderComments({ comments }) {
       <div>
         <h3>Comments</h3>
         <ul className="list-unstyled">{list}</ul>
+        <CommentForm dishId={dishId} addComment={addComment}></CommentForm>
       </div>
     );
   } else {
@@ -177,8 +187,11 @@ function DishDetail(props) {
             <RenderDish dish={props.dishSelect}></RenderDish>
           </div>
           <div className="col-12 col-md-5 m-1">
-            <RenderComments comments={props.comments}></RenderComments>
-            <CommentForm></CommentForm>
+            <RenderComments
+              comments={props.comments}
+              addComment={props.addComment}
+              dishId={props.dishSelect.id}
+            ></RenderComments>
           </div>
         </div>
       </div>
