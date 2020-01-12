@@ -10,6 +10,7 @@ import {
 import { Loading } from "./LoadingComponent";
 
 function RenderCard({ item, isLoading, errMsg }) {
+  console.log("Hello is Loading:" + isLoading);
   if (isLoading) {
     return <Loading></Loading>;
   } else if (errMsg) {
@@ -31,6 +32,7 @@ function RenderCard({ item, isLoading, errMsg }) {
 }
 
 function Home(props) {
+  console.log("dishes are:" + JSON.stringify(props.dishesLoading));
   return (
     <div className="container">
       <div className="row align-items-start">
@@ -42,7 +44,11 @@ function Home(props) {
           ></RenderCard>
         </div>
         <div className="col-12 col-md m-1">
-          <RenderCard item={props.promotion}></RenderCard>
+          <RenderCard
+            item={props.promotion}
+            isLoading={props.promosLoading}
+            errMsg={props.promosErrMess}
+          ></RenderCard>
         </div>
         <div className="col-12 col-md m-1">
           <RenderCard item={props.leader}></RenderCard>
