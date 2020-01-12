@@ -38,7 +38,7 @@ export class CommentForm extends Component {
   handleSubmit = values => {
     this.toggleModal();
     //alert("values passed is:" + JSON.stringify(this.props.dishId));
-    this.props.addComment(
+    this.props.postComment(
       this.props.dishId,
       values.rating,
       values.author,
@@ -137,7 +137,7 @@ function RenderDish({ dish }) {
   );
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
   if (comments != null) {
     console.log(
       "The comments passed are" + JSON.stringify(comments[comments.length - 1])
@@ -158,7 +158,7 @@ function RenderComments({ comments, addComment, dishId }) {
       <div>
         <h3>Comments</h3>
         <ul className="list-unstyled">{list}</ul>
-        <CommentForm dishId={dishId} addComment={addComment}></CommentForm>
+        <CommentForm dishId={dishId} postComment={postComment}></CommentForm>
       </div>
     );
   } else {
@@ -205,7 +205,7 @@ function DishDetail(props) {
           <div className="col-12 col-md-5 m-1">
             <RenderComments
               comments={props.comments}
-              addComment={props.addComment}
+              postComment={props.postComment}
               dishId={props.dishSelect.id}
             ></RenderComments>
           </div>
