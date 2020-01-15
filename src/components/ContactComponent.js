@@ -23,13 +23,19 @@ class Contact extends Component {
   }
 
   handleSubmit = values => {
-    console.log("Current values is :" + JSON.stringify(values));
+    this.props.postFeedback(
+      values.firstname,
+      values.lastname,
+      values.telnum,
+      values.email,
+      values.agree,
+      values.contactType,
+      values.message
+    );
     this.props.resetFeedbackForm();
   };
 
   render() {
-    console.log("Form is getting re-rendered");
-
     return (
       <div className="container">
         <div className="row m-1">

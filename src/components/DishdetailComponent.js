@@ -37,7 +37,6 @@ export class CommentForm extends Component {
 
   handleSubmit = values => {
     this.toggleModal();
-    //alert("values passed is:" + JSON.stringify(this.props.dishId));
     this.props.postComment(
       this.props.dishId,
       values.rating,
